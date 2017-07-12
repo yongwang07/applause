@@ -1,0 +1,61 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <img width="300" src="https://help.applause.com/wp-content/uploads/full-logo-1.png">
+</div>
+<h2 class="badge badge-default">Find Best Tester Base On Countries and Devices </h2>
+<div class="container-flow">
+  <form class="form-inline">
+    <div class="form-group col-6">
+      <label class="mr-sm-2 mb-0" for="conuntry">Country</label>
+      <select class="form-control mr-sm-2 mb-2 mb-sm-0 col-4" #country>
+        <option value="All">All</option>
+        <option *ngFor="let c of countries" [value]="c">{{c}}</option>
+      </select>
+      <button class="btn btn-info mt-2 mt-sm-0" (click)="addCriteria('country', country.value)">Add</button>
+    </div>
+    <div class="form-group col-6">
+      <label class="mr-sm-2 mb-0" for="device">Device</label>
+      <select class="form-control mr-sm-2 mb-2 mb-sm-0 col-4" #device>
+        <option value="All">All</option>
+        <option *ngFor="let c of devices" [value]="c.id">{{c.name}}</option>
+      </select>
+      <button class="btn btn-info mt-2 mt-sm-0" (click)="addCriteria('device', device.value)">Add</button>
+    </div>
+  </form>
+  <div class="row ml-4">
+    <ul class="col-4">
+      <li *ngFor="let c of selectedCountries">{{c}}
+        <button type="button" class="close" aria-label="Close">
+          <span aria-hidden="true" (click)="removeCriteria('country', c)">&times;</span>
+        </button>
+      </li>      
+    </ul>
+    <ul class="offset-2 col-4">
+      <li *ngFor="let c of selectedDevices">{{deviceMap[c]||'All'}}
+        <button type="button" class="close" aria-label="Close">
+          <span class="ml-sm-4" aria-hidden="true" (click)="removeCriteria('device', c)">&times;</span>
+        </button>
+      </li>      
+    </ul>
+  </div>
+  <button type="submit" class="btn btn-primary mt-2 mx-auto mt-sm-10" 
+    [disabled]="selectedCountries.length == 0 || selectedDevices.length == 0" (click)="search()">search</button>
+  <table class="table">
+  <thead>
+    <tr>
+      <th>Rank</th>
+      <th>Country</th>
+      <th>Name</th>
+      <th>Total Bug Found</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let test of testers; let i = index">
+      <th scope="row">{{i + 1}}</th>
+      <td>{{test.country}}</td>
+      <td>{{test.name}}</td>
+      <td>{{test.total}}</td>
+    </tr>
+  </tbody>
+</table>
+</div>

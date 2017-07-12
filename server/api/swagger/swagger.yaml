@@ -1,0 +1,107 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Hello World App
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths 
+basePath: /
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /search:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: search
+    get:
+      operationId: search
+      description: get list order tester base on country and device query options
+      # define the type of response for Success "200" and Error
+      parameters:
+        - name: country
+          type: array
+          items:
+            type: string
+          in: query
+          required: true
+        - name: deviceId
+          type: array
+          items:
+            type: string
+          in: query
+          required: true
+        - name: sort
+          type: boolean
+          in: query
+          required: false
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/SearchResult"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /swagger:
+    x-swagger-pipe: swagger_raw
+  /info:
+    x-swagger-router-controller: search
+    get:
+      operationId: info
+      description: get tester and device information
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/InfoResult"
+# complex objects have schema definitions
+definitions:
+  InfoResult:
+    properties:
+      result:
+        type: object
+        properties:
+          countries:
+            type: array
+            items:
+              type: string
+          devices:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                name:
+                  type: string
+  SearchResult:
+    required:
+      - result
+    properties:
+      result:
+        type: array
+        items: 
+          type: object
+          properties:
+            country:
+              type: string
+            name:
+              type: string
+            total:
+              type: integer
+  ErrorResponse:
+    required:
+      - error
+    properties:
+      error:
+        type: string
+        description: 'abc'
