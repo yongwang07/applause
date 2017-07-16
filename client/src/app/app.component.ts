@@ -47,10 +47,10 @@ export class AppComponent implements OnInit {
     return false;
   }
   search() {
-    let params = '?country=' + this.selectedCountries.join(',');
-    params += '&deviceId=' + this.selectedDevices.join(',');
-    this.http.get('http://localhost:10010/search' + params)
-      .subscribe(response => this.testers = response.json());
+    const params = 'http://localhost:10010/search?' +
+        this.selectedCountries.map(country => `country=${country}`).join('&') + '&' +
+        this.selectedDevices.map(deviceId => `deviceId=${deviceId}`).join('&');
+    this.http.get(params).subscribe(response => this.testers = response.json());
     return false;
   }
 }
