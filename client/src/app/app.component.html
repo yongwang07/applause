@@ -6,40 +6,14 @@
 <div class="container-flow">
   <form class="form-inline">
     <div class="form-group col-6">
-      <label class="mr-sm-2 mb-0" for="conuntry">Country</label>
-      <select class="form-control mr-sm-2 mb-2 mb-sm-0 col-4" #country>
-        <option value="All">All</option>
-        <option *ngFor="let c of countries" [value]="c">{{c}}</option>
-      </select>
-      <button class="btn btn-info mt-2 mt-sm-0" (click)="addCriteria('country', country.value)">Add</button>
+      <app-property [type]="'countries'" class="col-12"></app-property>
     </div>
     <div class="form-group col-6">
-      <label class="mr-sm-2 mb-0" for="device">Device</label>
-      <select class="form-control mr-sm-2 mb-2 mb-sm-0 col-4" #device>
-        <option value="All">All</option>
-        <option *ngFor="let c of devices" [value]="c.id">{{c.name}}</option>
-      </select>
-      <button class="btn btn-info mt-2 mt-sm-0" (click)="addCriteria('device', device.value)">Add</button>
+      <app-property [type]="'devices'" class="col-12"></app-property>
     </div>
   </form>
-  <div class="row ml-4">
-    <ul class="col-4">
-      <li *ngFor="let c of selectedCountries">{{c}}
-        <button type="button" class="close" aria-label="Close">
-          <span aria-hidden="true" (click)="removeCriteria('country', c)">&times;</span>
-        </button>
-      </li>      
-    </ul>
-    <ul class="offset-2 col-4">
-      <li *ngFor="let c of selectedDevices">{{deviceMap[c]||'All'}}
-        <button type="button" class="close" aria-label="Close">
-          <span class="ml-sm-4" aria-hidden="true" (click)="removeCriteria('device', c)">&times;</span>
-        </button>
-      </li>      
-    </ul>
-  </div>
   <button type="submit" class="btn btn-primary mt-2 mx-auto mt-sm-10" 
-    [disabled]="selectedCountries.length == 0 || selectedDevices.length == 0" (click)="search()">search</button>
+    [disabled]="userSelectService.isSearchable()" (click)="search()">search</button>
   <table class="table">
   <thead>
     <tr>
@@ -50,7 +24,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let test of testers; let i = index">
+    <tr *ngFor="let test of testers | async; let i = index">
       <th scope="row">{{i + 1}}</th>
       <td>{{test.country}}</td>
       <td>{{test.name}}</td>

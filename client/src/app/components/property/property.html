@@ -1,0 +1,13 @@
+<label class="mr-sm-2 mb-0 float-left" for="property">{{type}}</label>
+<select class="form-control mr-sm-2 mb-2 mb-sm-0 col-6" #property>
+    <option value="All">All</option>
+    <option *ngFor="let c of properties"  [value]="c.id || c">{{c.name || c}}</option>
+</select>
+<button class="btn btn-info mt-2 mt-sm-0" (click)="userSelectService.addCriteria(type, property.value); false">Add</button>
+<ul class="col-12">
+    <li *ngFor="let c of selectProperties">{{name(c)}}
+        <button type="button" class="close" aria-label="Close">
+          <span aria-hidden="true" (click)="userSelectService.removeCriteria(type, c)">&times;</span>
+        </button>
+    </li>
+</ul>
